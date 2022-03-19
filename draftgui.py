@@ -9,6 +9,9 @@ from tkinter import messagebox
 #import bluetooth
 #nearby_devices = bluetooth.discover_devices()
 
+# fake list
+fakeDeviceList=["phone", "tablet", "laptop", "Desktop", "Smart TV", "AEMI"]
+
 # Initialization
 root = Tk()
 root.title("AEMS panel")
@@ -36,9 +39,16 @@ def openDebugTerminal():
 def openBluetoothList():
     topWindow2 = Toplevel()
     topWindow2.title("Discover Bluebooth Device...")
+    global deviceList
     deviceList = Listbox(topWindow2)
-    deviceList.insert(END, "fuck")
+    connectBlueButton = Button(topWindow2, text="Connect", command = connectToBlueDevice)
+    for i in fakeDeviceList:
+        deviceList.insert(END, i)
     deviceList.pack()
+    connectBlueButton.pack()
+
+def connectToBlueDevice():
+    messagebox.showinfo("Info", "Connected to "+ deviceList.get(ANCHOR))
 
 # Setup widegts
 # ---------------------------------------------------------------------------------------------
