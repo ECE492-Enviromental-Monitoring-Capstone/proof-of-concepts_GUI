@@ -6,7 +6,7 @@
 from tkinter import *
 #from PIL import ImageTk, Image
 from tkinter import messagebox
-import bluetooth
+#import bluetooth
 
 #nearby_devices = bluetooth.discover_devices()
 
