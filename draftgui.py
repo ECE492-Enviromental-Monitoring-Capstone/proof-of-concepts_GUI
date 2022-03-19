@@ -7,7 +7,6 @@ from tkinter import *
 #from PIL import ImageTk, Image
 from tkinter import messagebox
 #import bluetooth
-
 #nearby_devices = bluetooth.discover_devices()
 
 # Initialization
@@ -74,7 +73,6 @@ openTerminalButton = Button(root, text="Open Debug Terminal", command=openDebugT
 # ---------------------------------------------------------------------------------------------
 
 # Set widgets positions
-#dataFrame.pack()
 startRecButton.grid(row=1, column=0)
 stopRecButton.grid(row=1, column=1)
 statusBox.grid(row=0, column=0, columnspan=2)
