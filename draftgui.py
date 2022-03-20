@@ -85,13 +85,16 @@ humidityBox = Entry(root, width=10, borderwidth = "5")
 humidityBox.insert(0, "0 %")
 
 # luminosity
-
+luminosityLabel = Label(root, text = "Current Lumin")
+luminosityBox = Entry(root, width=10, borderwidth="5")
+luminosityBox.insert(0, "0.1 W")
 
 # USmic Rec
 statusBox = Entry(root, width=40,fg="white", bg="blue", borderwidth = "5")
 statusBox.insert(0, "Welcome to AEMS!")
 startRecButton = Button(root, text="Start Rec", padx=40, pady=20, command=clickStartRec, fg="green")
 stopRecButton = Button(root, text="Stop Rec", padx=40, pady=20, command=clickStopRec, fg="red")
+
 
 # Show debug terminal
 openTerminalButton = Button(root, text="Open Debug Terminal", command=openDebugTerminal)
@@ -110,5 +113,7 @@ openTerminalButton.grid(row=4, column=0)
 openBlueButton.grid(row=5, column=0)
 connectionStatusBox.grid(row=6, column=0)
 disconBlueButton.grid(row=6, column=1)
+luminosityLabel.grid(row=7, column=0)
+luminosityBox.grid(row=7, column=1)
 
 root.mainloop()
