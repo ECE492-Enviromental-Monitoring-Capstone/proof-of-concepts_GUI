@@ -14,7 +14,7 @@ import fakeParameters
 root = Tk()
 root.title("AEMS panel")
 #root.iconbitmap('/Users/hoyeungching/Desktop/logo.ico')
-root.geometry("400x400")
+root.geometry("500*500")
 
 # Function Definitions
 def clickStartRec():
