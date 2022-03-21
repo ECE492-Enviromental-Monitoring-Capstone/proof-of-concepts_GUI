@@ -7,7 +7,7 @@ def getFakeHumi():
     return random.randrange(0, 100)
 
 def getFakeLumi():
-    return random.randrange(0, 1)
+    return random.randrange(0, 50)
 
 #BigList = ["phone", "tablet", "laptop", "Desktop", "Smart TV", "AEMI", "headphone", "keyboard", "mouse", "projector", "printer", "speaker", "spy camera", "car", "air conditioner", "smart fridge", "smart window", "smart oven", "smart coffe machine"]
 

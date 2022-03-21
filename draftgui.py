@@ -11,26 +11,33 @@ from tkinter import messagebox
 import threading
 import time
 import fakeParameters
+import datetime
 
-# Initialization
+# Main Window
 root = Tk()
 root.title("AEMS panel")
 #root.iconbitmap('/Users/hoyeungching/Desktop/logo.ico')
 root.geometry("500x500")
 
-# Function Definitions
+# ---[Function Definitions]------------------------------------------------------------------------------------
 def clickStartRec():
+    global presetTime
+    presetTime = 360*float(LoggingHourBox.get()) + 60*float(LoggingMinBox.get()) + float(LoggingSecBox.get())
+    global loggingStartTime
+    loggingStartTime = time.time()
+    messagebox.showinfo("Info", "Recording Started!")
     statusBox.delete(0, END)
     statusBox.config(bg="red")
-    statusBox.insert(0, "Recording inprogress...")
-    messagebox.showinfo("Info", "Recording Started!")
+    statusBox.insert(0, "Rec in progress...")
+    threading.Thread(target=recording).start()
 
 def clickStopRec():
     response1 = messagebox.askyesno("Warning", "Stop Recording?")
     if response1:
         statusBox.config(bg="green")
         statusBox.delete(0, END)
-        statusBox.insert(0, "Recording saved!")
+        statusBox.insert(0, "Recording of {} saved!".format(str(time.time()-loggingStartTime)))
+    presetTime = 0
 
 def openDebugTerminal():
     topWindow = Toplevel()
@@ -70,6 +77,18 @@ def disconToBlueDevice():
     connectionStatusBox.delete(0, END)
     connectionStatusBox.insert(0, "Not Connected")
 
+def recording():
+    # update logging status
+    while (time.time() - loggingStartTime) < presetTime:
+        statusBox.delete(0, END)
+        statusBox.config(bg="red")
+        statusBox.insert(0, "Rec in progress... " + str(int((time.time()-loggingStartTime)*100/presetTime)) + "%" + " finished")
+        time.sleep(0.5)
+    # logging times up
+    statusBox.config(bg="green")
+    statusBox.delete(0, END)
+    statusBox.insert(0, "Recording of {} saved!".format(str(datetime.timedelta(seconds=(presetTime)))))
+
 def realTimeUpdateMeasurement():
     while True:
         # update temp
@@ -83,12 +102,11 @@ def realTimeUpdateMeasurement():
         # update lumi
         luminosityBox.delete(0, END)
         luminosityBox.insert(0, str(fakeParameters.getFakeLumi()) + " W")
-
+                
         # frequency
         time.sleep(1)
 
-# Setup widegts
-# ---------------------------------------------------------------------------------------------
+# ---[Setup widegts]----------------------------------------------------------------------------------
 # Device connection
 openBlueButton = Button(root, text = "Bluetooth", command=openBluetoothList)
 connectionStatusBox = Entry(root, width=20, borderwidth="5", fg="white", bg="red")
@@ -114,17 +132,18 @@ luminosityBox = Entry(root, width=10, borderwidth="5")
 luminosityBox.insert(0, str(fakeParameters.getFakeLumi()) + " W")
 
 # USmic Rec
-statusBox = Entry(root, width=40,fg="white", bg="blue", borderwidth = "5")
+statusBox = Entry(root, width=25,fg="white", bg="blue", borderwidth = "5")
 statusBox.insert(0, "Welcome to AEMS!")
 startRecButton = Button(root, text="Start Rec", padx=40, pady=20, command=clickStartRec, fg="green")
 stopRecButton = Button(root, text="Stop Rec", padx=40, pady=20, command=clickStopRec, fg="red")
+LoggingSecBox = Entry(root, width=20, borderwidth="5")
+LoggingMinBox = Entry(root, width=20, borderwidth="5")
+LoggingHourBox = Entry(root, width=20, borderwidth="5")
 
 # Show debug terminal
 openTerminalButton = Button(root, text="Open Debug Terminal", command=openDebugTerminal)
 
-# ---------------------------------------------------------------------------------------------
-
-# Set widgets positions
+# ---[Positioning widgets]---------------------------------------------------------------------------------------
 startRecButton.grid(row=1, column=0)
 stopRecButton.grid(row=1, column=1)
 statusBox.grid(row=0, column=0, columnspan=2)
@@ -138,7 +157,11 @@ connectionStatusBox.grid(row=6, column=0)
 disconBlueButton.grid(row=6, column=1)
 luminosityLabel.grid(row=7, column=0)
 luminosityBox.grid(row=7, column=1)
+LoggingHourBox.grid(row=8, column=0)
+LoggingMinBox.grid(row=9, column=0)
+LoggingSecBox.grid(row=10, column=0)
 
+# ---[Threading]--------------------------------------------------------------------------------------
 threading.Thread(target=realTimeUpdateMeasurement).start()
 
 root.mainloop()
