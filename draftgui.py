@@ -8,13 +8,15 @@ from tkinter import *
 from tkinter import messagebox
 #import bluetooth
 #nearby_devices = bluetooth.discover_devices()
+import threading
+import time
 import fakeParameters
 
 # Initialization
 root = Tk()
 root.title("AEMS panel")
 #root.iconbitmap('/Users/hoyeungching/Desktop/logo.ico')
-root.geometry("500*500")
+root.geometry("500x500")
 
 # Function Definitions
 def clickStartRec():
@@ -68,6 +70,23 @@ def disconToBlueDevice():
     connectionStatusBox.delete(0, END)
     connectionStatusBox.insert(0, "Not Connected")
 
+def realTimeUpdateMeasurement():
+    while True:
+        # update temp
+        temperatureBox.delete(0, END)
+        temperatureBox.insert(0, str(fakeParameters.getFakeTemp()) + " C")
+
+        # update humi
+        humidityBox.delete(0, END)
+        humidityBox.insert(0, str(fakeParameters.getFakeHumi()) + " %")
+
+        # update lumi
+        luminosityBox.delete(0, END)
+        luminosityBox.insert(0, str(fakeParameters.getFakeLumi()) + " W")
+
+        # frequency
+        time.sleep(1)
+
 # Setup widegts
 # ---------------------------------------------------------------------------------------------
 # Device connection
@@ -100,7 +119,6 @@ statusBox.insert(0, "Welcome to AEMS!")
 startRecButton = Button(root, text="Start Rec", padx=40, pady=20, command=clickStartRec, fg="green")
 stopRecButton = Button(root, text="Stop Rec", padx=40, pady=20, command=clickStopRec, fg="red")
 
-
 # Show debug terminal
 openTerminalButton = Button(root, text="Open Debug Terminal", command=openDebugTerminal)
 
@@ -120,5 +138,7 @@ connectionStatusBox.grid(row=6, column=0)
 disconBlueButton.grid(row=6, column=1)
 luminosityLabel.grid(row=7, column=0)
 luminosityBox.grid(row=7, column=1)
+
+threading.Thread(target=realTimeUpdateMeasurement).start()
 
 root.mainloop()

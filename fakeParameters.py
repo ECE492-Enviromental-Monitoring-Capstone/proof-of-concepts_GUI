@@ -9,11 +9,14 @@ def getFakeHumi():
 def getFakeLumi():
     return random.randrange(0, 1)
 
-BigList = ["phone", "tablet", "laptop", "Desktop", "Smart TV", "AEMI", "headphone", "keyboard", "mouse", "projector", "printer", "speaker", "spy camera", "car", "air conditioner", "smart fridge", "smart window", "smart oven", "smart coffe machine"]
+#BigList = ["phone", "tablet", "laptop", "Desktop", "Smart TV", "AEMI", "headphone", "keyboard", "mouse", "projector", "printer", "speaker", "spy camera", "car", "air conditioner", "smart fridge", "smart window", "smart oven", "smart coffe machine"]
 
 def getFakeBlueList():
     fakeList = []
+    BigList = ["phone", "tablet", "laptop", "Desktop", "Smart TV", "AEMI", "headphone", "keyboard", "mouse", "projector", "printer", "speaker", "spy camera", "car", "air conditioner", "smart fridge", "smart window", "smart oven", "smart coffe machine"]
     num = random.randint(2, 5)
     for i in range(num):
-        fakeList.append(random.choice(BigList))
+        j = random.choice(BigList)
+        fakeList.append(j)
+        BigList.remove(j)
     return fakeList
