@@ -8,9 +8,7 @@ from tkinter import *
 from tkinter import messagebox
 #import bluetooth
 #nearby_devices = bluetooth.discover_devices()
-
-# fake list
-fakeDeviceList=["phone", "tablet", "laptop", "Desktop", "Smart TV", "AEMI"]
+import fakeParameters
 
 # Initialization
 root = Tk()
@@ -42,11 +40,18 @@ def openBluetoothList():
     topWindow2.title("Discover Bluebooth Device...")
     global deviceList
     deviceList = Listbox(topWindow2)
+    refreshBlueButton = Button(topWindow2, text="Refresh", command = refreshBlueList)
     connectBlueButton = Button(topWindow2, text="Connect", command = connectToBlueDevice)
-    for i in fakeDeviceList:
+    for i in fakeParameters.getFakeBlueList():
         deviceList.insert(END, i)
     deviceList.pack()
+    refreshBlueButton.pack()
     connectBlueButton.pack()
+
+def refreshBlueList():
+    deviceList.delete(0, END)
+    for i in fakeParameters.getFakeBlueList():
+        deviceList.insert(END, i)
 
 def connectToBlueDevice():
     global currentDeviceName
@@ -77,17 +82,17 @@ dataFrame = LabelFrame(root, text="Current Data", padx=20, pady=60)
 # temperature
 temperatureLabel = Label(root, text = "Current Temp")
 temperatureBox = Entry(root, width=10, borderwidth = "5")
-temperatureBox.insert(0, "0 C")
+temperatureBox.insert(0, str(fakeParameters.getFakeTemp()) + " C")
 
 # humidity
 humidityLabel = Label(root, text = "Current Humi")
 humidityBox = Entry(root, width=10, borderwidth = "5")
-humidityBox.insert(0, "0 %")
+humidityBox.insert(0, str(fakeParameters.getFakeHumi()) + " %")
 
 # luminosity
 luminosityLabel = Label(root, text = "Current Lumin")
 luminosityBox = Entry(root, width=10, borderwidth="5")
-luminosityBox.insert(0, "0.1 W")
+luminosityBox.insert(0, str(fakeParameters.getFakeLumi()) + " W")
 
 # USmic Rec
 statusBox = Entry(root, width=40,fg="white", bg="blue", borderwidth = "5")
